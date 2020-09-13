@@ -5,4 +5,112 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
+    <changeSet id="V-1.0.0-TBL-1" author="muk2jobair">
+        <createTable tableName="status_ref">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(250)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="V-1.0.0-TBL-2" author="muk2jobair">
+        <createTable tableName="role_ref">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(250)"/>
+            <column name="status_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="V-1.0.0-TBL-3" author="muk2jobair">
+        <addForeignKeyConstraint baseColumnNames="status_id"
+                                 baseTableName="role_ref"
+                                 constraintName="fk_role_ref_status_ref"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status_ref"
+                                 validate="true"/>
+    </changeSet>
+
+    <changeSet id="V-1.0.0-TBL-4" author="muk2jobair">
+        <createTable tableName="user">
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="password" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)" defaultValue="system"/>
+            <column name="created_date" type="DATETIME" defaultValueDate="NOW()"/>
+            <column name="modified_by" type="VARCHAR(50)" defaultValue="system"/>
+            <column name="modified_date" type="DATETIME" defaultValueDate="NOW()"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="V-1.0.0-TBL-5" author="muk2jobair">
+        <addForeignKeyConstraint baseColumnNames="status_id"
+                                 baseTableName="user"
+                                 constraintName="fk_user_status_ref"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status_ref"
+                                 validate="true"/>
+    </changeSet>
+
+    <changeSet id="V-1.0.0-TBL-6" author="muk2jobair">
+        <createTable tableName="user_role">
+            <column name="id" type="BIGINT" autoIncrement="true" incrementBy="1">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="username" type="VARCHAR(50)"/>
+            <column name="role_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)" defaultValue="system"/>
+            <column name="created_date" type="DATETIME" defaultValueDate="NOW()"/>
+            <column name="modified_by" type="VARCHAR(50)" defaultValue="system"/>
+            <column name="modified_date" type="DATETIME" defaultValueDate="NOW()"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="V-1.0.0-TBL-7" author="muk2jobair">
+        <addForeignKeyConstraint baseColumnNames="role_id"
+                                 baseTableName="user_role"
+                                 constraintName="fk_user_role_role_ref"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="role_ref"
+                                 validate="true"/>
+    </changeSet>
+
+    <changeSet id="V-1.0.0-TBL-8" author="muk2jobair">
+        <addForeignKeyConstraint baseColumnNames="status_id"
+                                 baseTableName="user_role"
+                                 constraintName="fk_user_role_status_ref"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status_ref"
+                                 validate="true"/>
+    </changeSet>
+
 </databaseChangeLog>
